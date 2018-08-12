@@ -2,7 +2,7 @@
 
 Our models are simple modifications based on YT8M-2017 winner's solution: https://github.com/antoine77340/Youtube-8M-WILLOW. 
 
-The best model obtained is the LightVLAD model with the following parameters:
+The best model obtained is the LightVLAD model, which ranked at 18/394 in YT8M-2018. The training parameters are:
 
 - batch_size=200
 - base_learning_rate=0.0001
