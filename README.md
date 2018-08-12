@@ -27,3 +27,5 @@ There are several patterns we found:
 6. netVLAD is the second best comparing to LightVLAD.
 
 7. In the LightVLAD model, number of hidden neurons is more important than netvlad_cluster_size.
+
+To see the actual command, check out the job files in each folder.
