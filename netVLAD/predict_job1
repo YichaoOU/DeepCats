@@ -1,0 +1,15 @@
+#PBS -N predictNetVLAD1
+#PBS -l nodes=1:ppn=1:gpus=1:default
+#PBS -l walltime=100:00:00
+#PBS -l mem=16GB
+#PBS -j oe
+ 
+cd /fs/scratch/PHS0293/YT8M/baseline_models/netVLAD/
+module load python/2.7 cuda/9.1.85
+source activate local
+
+python eval.py --eval_data_pattern="/fs/scratch/PHS0293/YT8M/yt8m/v2/frame/test0100.tfrecord"  --train_dir=NetVLAD-250-850 --model=NetVLADModelLF --frame_features=True --feature_names="rgb,audio" --feature_sizes="1024,128" --batch_size=2000 --base_learning_rate=0.0002 --netvlad_cluster_size=250 --netvlad_hidden_size=850 --moe_l2=1e-6 --iterations=300 --learning_rate_decay=0.8 --netvlad_relu=False --gating=True --moe_prob_gating=True  --audio_cluster_size=40 --run_once=True  --top_k=20
+
+python inference.py --output_file=NetVLAD-250-850-prediction.csv --input_data_pattern="/fs/scratch/PHS0293/YT8M/yt8m/v2/test_frame_all/test*.tfrecord" --model=NetVLADModelLF --train_dir=NetVLAD-250-850 --frame_features=True --feature_names="rgb,audio" --feature_sizes="1024,128" --batch_size=2000 --base_learning_rate=0.0002 --netvlad_cluster_size=250 --netvlad_hidden_size=850 --moe_l2=1e-6 --iterations=300 --learning_rate_decay=0.8 --netvlad_relu=False --gating=True --moe_prob_gating=True --run_once=True  --top_k=20 --audio_cluster_size=40 --output_model_tgz=NetVLAD-250-850-prediction-model.tgz
+
+# python train.py --train_data_pattern="/fs/scratch/PHS0293/YT8M/yt8m/v2/train_frame_all/*.tfrecord" --model=NetVLADModelLF --train_dir=NetVLAD-250-850 --frame_features=True --feature_names="rgb,audio" --feature_sizes="1024,128" --batch_size=80 --base_learning_rate=0.0002 --netvlad_cluster_size=250 --netvlad_hidden_size=850 --moe_l2=1e-6 --iterations=300 --learning_rate_decay=0.8 --netvlad_relu=False --gating=True --moe_prob_gating=True --max_step=600000 --audio_cluster_size=40
